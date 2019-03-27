@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Cam4Learn</string>
+    <string name="hint_enter_email">E-mail</string>
+    <string name="hint_enter_password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_without_password">Login without password</string>
 </resources>
