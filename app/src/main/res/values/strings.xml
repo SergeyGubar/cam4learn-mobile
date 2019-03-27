@@ -4,4 +4,7 @@
     <string name="hint_enter_password">Password</string>
     <string name="login">Login</string>
     <string name="login_without_password">Login without password</string>
+
+    <string name="error_email_validation">You need to enter valid email!</string>
+    <string name="error_password_validation">You need to enter valid password!</string>
 </resources>
