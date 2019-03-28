@@ -3,6 +3,8 @@ package io.github.gubarsergey.cam4learn.ui
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.github.gubarsergey.cam4learn.R
+import io.github.gubarsergey.cam4learn.Result
+import io.github.gubarsergey.cam4learn.network.model.request.LoginRequestModel
 import io.github.gubarsergey.cam4learn.network.repository.LoginRepository
 import io.github.gubarsergey.cam4learn.utility.extension.input
 import io.github.gubarsergey.cam4learn.utility.extension.navigate
@@ -10,6 +12,7 @@ import io.github.gubarsergey.cam4learn.utility.extension.safelyDispose
 import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import io.github.gubarsergey.cam4learn.utility.validator.CredentialsValidator
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -46,8 +49,27 @@ class LoginActivity : AppCompatActivity() {
         val isEmailValid = CredentialsValidator.isEmailValid(email)
         val isPasswordValid = CredentialsValidator.isPasswordValid(password)
         if (isEmailValid && isPasswordValid) {
-            loginRepository.login(email, password)
-            SharedPrefHelper.setUserLoggedIn(this, true).also { navigate<MainActivity>(this) }
+            disposable = loginRepository.login(
+                LoginRequestModel(
+                    email,
+                    password
+                )
+            ).subscribeBy(
+                onNext = { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            Timber.d("handleLogin: result success [$result]")
+                            SharedPrefHelper.setUserLoggedIn(this, true).also { navigate<MainActivity>(this) }
+                        }
+                        is Result.Error -> {
+                            Timber.d("handleLogin: result error [$result]")
+                        }
+                    }
+                },
+                onError = {
+                    Timber.d("handleLogin: result error [$it]")
+                }
+            )
             return
         }
         handleLoginError(isEmailValid, isPasswordValid)
