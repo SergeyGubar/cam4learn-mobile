@@ -1,4 +1,4 @@
-package io.github.gubarsergey.cam4learn.network.model.response
+package io.github.gubarsergey.cam4learn.network.entity.response
 
 import com.google.gson.annotations.SerializedName
 

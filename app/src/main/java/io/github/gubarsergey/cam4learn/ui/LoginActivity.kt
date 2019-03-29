@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.github.gubarsergey.cam4learn.R
 import io.github.gubarsergey.cam4learn.Result
-import io.github.gubarsergey.cam4learn.network.model.request.LoginRequestModel
+import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel
 import io.github.gubarsergey.cam4learn.network.repository.LoginRepository
 import io.github.gubarsergey.cam4learn.utility.extension.input
 import io.github.gubarsergey.cam4learn.utility.extension.navigate
@@ -14,12 +14,14 @@ import io.github.gubarsergey.cam4learn.utility.validator.CredentialsValidator
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
 
     private val loginRepository: LoginRepository by inject()
+    private val prefHelper: SharedPrefHelper by inject()
     private var disposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkIfUserIsLoggedIn(isUserLoggedAction: () -> Unit) {
-        if (SharedPrefHelper.isUserLoggedIn(this)) isUserLoggedAction.invoke()
+        if (prefHelper.isUserLoggedIn()) isUserLoggedAction.invoke()
     }
 
     private fun setupListeners() {
@@ -50,24 +52,26 @@ class LoginActivity : AppCompatActivity() {
         val isPasswordValid = CredentialsValidator.isPasswordValid(password)
         if (isEmailValid && isPasswordValid) {
             disposable = loginRepository.login(
-                LoginRequestModel(
-                    email,
-                    password
-                )
+                LoginRequestModel(email, password)
             ).subscribeBy(
-                onNext = { result ->
+                onSuccess = { result ->
                     when (result) {
                         is Result.Success -> {
                             Timber.d("handleLogin: result success [$result]")
-                            SharedPrefHelper.setUserLoggedIn(this, true).also { navigate<MainActivity>(this) }
+                            val token = result.value?.token
+                            token?.let {
+                                prefHelper.saveToken(token)
+                                prefHelper.setUserLoggedIn(true).also { navigate<MainActivity>(this) }
+                            } ?: Timber.w("handleLogin: result error: success response, but no token")
                         }
                         is Result.Error -> {
-                            Timber.d("handleLogin: result error [$result]")
+                            Timber.w("handleLogin: result error [${result.errorCode}]")
+                            toast("Login failed!")
                         }
                     }
                 },
                 onError = {
-                    Timber.d("handleLogin: result error [$it]")
+                    Timber.w("handleLogin: result error [${it.localizedMessage}]")
                 }
             )
             return

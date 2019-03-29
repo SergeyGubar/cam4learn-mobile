@@ -1,6 +1,5 @@
 package io.github.gubarsergey.cam4learn.network.constant
 
 object NetworkConstants {
-    // TODO
-    const val BASE_URl = "https://github.com"
+    const val BASE_URl = "http://104.196.250.21:8030/"
 }
