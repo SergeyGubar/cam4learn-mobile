@@ -3,8 +3,10 @@ package io.github.gubarsergey.cam4learn
 import android.app.Application
 import com.google.gson.GsonBuilder
 import io.github.gubarsergey.cam4learn.network.api.LoginApi
+import io.github.gubarsergey.cam4learn.network.api.SubjectsApi
 import io.github.gubarsergey.cam4learn.network.constant.NetworkConstants
-import io.github.gubarsergey.cam4learn.network.repository.LoginRepository
+import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
+import io.github.gubarsergey.cam4learn.network.repository.subject.SubjectsRepository
 import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -42,8 +44,7 @@ class App : Application() {
 
     private val loginModule = module {
         single {
-            val retrofit: Retrofit = get()
-            retrofit.create(LoginApi::class.java)
+            get<Retrofit>().create(LoginApi::class.java)
         }
         single {
             LoginRepository(get())
@@ -56,13 +57,27 @@ class App : Application() {
         }
     }
 
+    private val subjectsModule = module {
+        single {
+            SubjectsRepository(get(), get())
+        }
+        single {
+            get<Retrofit>().create(SubjectsApi::class.java)
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
         startKoin {
-            modules(networkModule, loginModule, utilsModule)
+            modules(
+                networkModule,
+                loginModule,
+                utilsModule,
+                subjectsModule
+            )
             androidContext(this@App)
         }
     }

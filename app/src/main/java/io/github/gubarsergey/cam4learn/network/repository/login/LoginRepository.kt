@@ -1,4 +1,4 @@
-package io.github.gubarsergey.cam4learn.network.repository
+package io.github.gubarsergey.cam4learn.network.repository.login
 
 import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.api.LoginApi

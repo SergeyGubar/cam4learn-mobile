@@ -5,7 +5,7 @@ import android.os.Bundle
 import io.github.gubarsergey.cam4learn.R
 import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel
-import io.github.gubarsergey.cam4learn.network.repository.LoginRepository
+import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
 import io.github.gubarsergey.cam4learn.ui.main.MainActivity
 import io.github.gubarsergey.cam4learn.utility.extension.input
 import io.github.gubarsergey.cam4learn.utility.extension.navigate
@@ -47,13 +47,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleLogin(email: String, password: String) {
-        Timber.d("handleLogin: email = [$email], password = [$password]")
-        val isEmailValid = CredentialsValidator.isEmailValid(email)
+    private fun handleLogin(login: String, password: String) {
+        Timber.d("handleLogin: login = [$login], password = [$password]")
+        val isEmailValid = CredentialsValidator.isEmailValid(login)
         val isPasswordValid = CredentialsValidator.isPasswordValid(password)
         if (isEmailValid && isPasswordValid) {
             disposable = loginRepository.login(
-                LoginRequestModel(email, password)
+                LoginRequestModel(login, password)
             ).subscribeBy(
                 onSuccess = { result ->
                     when (result) {
@@ -61,8 +61,12 @@ class LoginActivity : AppCompatActivity() {
                             Timber.d("handleLogin: result success [$result]")
                             val token = result.value?.token
                             token?.let {
-                                prefHelper.saveToken(token)
-                                prefHelper.setUserLoggedIn(true).also { navigate<MainActivity>(this) }
+                                with(prefHelper) {
+                                    saveToken(token)
+                                    saveLogin(login)
+                                    savePassword(password)
+                                    setUserLoggedIn(true).also { navigate<MainActivity>(this@LoginActivity) }
+                                }
                             } ?: Timber.w("handleLogin: result error: success response, but no token")
                         }
                         is Result.Error -> {
