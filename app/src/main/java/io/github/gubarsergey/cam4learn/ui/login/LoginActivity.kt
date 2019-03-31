@@ -1,4 +1,4 @@
-package io.github.gubarsergey.cam4learn.ui
+package io.github.gubarsergey.cam4learn.ui.login
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,7 @@ import io.github.gubarsergey.cam4learn.R
 import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel
 import io.github.gubarsergey.cam4learn.network.repository.LoginRepository
+import io.github.gubarsergey.cam4learn.ui.main.MainActivity
 import io.github.gubarsergey.cam4learn.utility.extension.input
 import io.github.gubarsergey.cam4learn.utility.extension.navigate
 import io.github.gubarsergey.cam4learn.utility.extension.safelyDispose
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        checkIfUserIsLoggedIn { navigate<MainActivity>(this) }
+        checkIfUserIsLoggedIn { navigate<MainActivity>(this); finish() }
         setupListeners()
     }
 
