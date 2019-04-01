@@ -10,4 +10,9 @@
 
     <string name="error_email_validation">You need to enter valid email!</string>
     <string name="error_password_validation">You need to enter valid password!</string>
+    <string name="export">Export</string>
+    <string name="ok">Ok</string>
+    <string name="info_lectors_export">This action will export data about lectors. Continue?</string>
+    <string name="info_subjects_export">This action will export data about subjects. Continue?</string>
+
 </resources>

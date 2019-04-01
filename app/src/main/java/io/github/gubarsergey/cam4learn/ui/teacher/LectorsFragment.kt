@@ -2,11 +2,15 @@ package io.github.gubarsergey.cam4learn.ui.teacher
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import io.github.gubarsergey.cam4learn.R
 import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.repository.lector.LectorsRepository
 import io.github.gubarsergey.cam4learn.ui.BaseFragment
+import io.github.gubarsergey.cam4learn.utility.dialog.DialogUtil
 import io.github.gubarsergey.cam4learn.utility.extension.notNullContext
 import io.github.gubarsergey.cam4learn.utility.extension.safelyDispose
 import io.reactivex.rxkotlin.subscribeBy
@@ -28,20 +32,39 @@ class LectorsFragment : BaseFragment() {
     private val lectorsRepository: LectorsRepository by inject()
     private val adapter = LectorsAdapter()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadTeachers()
         initRecycler()
     }
 
-    private fun initRecycler() {
-        lectors_recycler.adapter = adapter
-        lectors_recycler.layoutManager = LinearLayoutManager(notNullContext)
-    }
-
     override fun onStop() {
         super.onStop()
         disposable.safelyDispose()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.main_menu_teachers -> {
+                DialogUtil.showPositiveDialog(notNullContext, getString(R.string.export), getString(R.string.info_lectors_export))
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun initRecycler() {
+        lectors_recycler.adapter = adapter
+        lectors_recycler.layoutManager = LinearLayoutManager(notNullContext)
     }
 
     private fun loadTeachers() {
