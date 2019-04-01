@@ -10,6 +10,7 @@ import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
 import io.github.gubarsergey.cam4learn.ui.group.GroupsFragment
 import io.github.gubarsergey.cam4learn.ui.subject.SubjectsFragment
+import io.github.gubarsergey.cam4learn.ui.teacher.LectorsFragment
 import io.github.gubarsergey.cam4learn.utility.extension.inTransaction
 import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import io.reactivex.disposables.Disposable
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         val fragment = when (menuItem.itemId) {
             R.id.nav_groups -> GroupsFragment.newInstance()
             R.id.nav_subjects -> SubjectsFragment.newInstance()
-            R.id.nav_teachers -> SubjectsFragment.newInstance()
+            R.id.nav_teachers -> LectorsFragment.newInstance()
             else -> throw IllegalStateException("Menu item $menuItem does not exist!")
         }
         supportFragmentManager.inTransaction {

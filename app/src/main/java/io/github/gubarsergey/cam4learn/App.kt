@@ -2,9 +2,11 @@ package io.github.gubarsergey.cam4learn
 
 import android.app.Application
 import com.google.gson.GsonBuilder
+import io.github.gubarsergey.cam4learn.network.api.LectorsApi
 import io.github.gubarsergey.cam4learn.network.api.LoginApi
 import io.github.gubarsergey.cam4learn.network.api.SubjectsApi
 import io.github.gubarsergey.cam4learn.network.constant.NetworkConstants
+import io.github.gubarsergey.cam4learn.network.repository.lector.LectorsRepository
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
 import io.github.gubarsergey.cam4learn.network.repository.subject.SubjectsRepository
 import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
@@ -66,6 +68,15 @@ class App : Application() {
         }
     }
 
+    private val lectorsModule = module {
+        single {
+            get<Retrofit>().create(LectorsApi::class.java)
+        }
+        single {
+            LectorsRepository(get(), get())
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
@@ -76,7 +87,8 @@ class App : Application() {
                 networkModule,
                 loginModule,
                 utilsModule,
-                subjectsModule
+                subjectsModule,
+                lectorsModule
             )
             androidContext(this@App)
         }
