@@ -7,6 +7,7 @@ import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
 import io.github.gubarsergey.cam4learn.ui.main.MainActivity
+import io.github.gubarsergey.cam4learn.utility.extension.addSimpleTextChangedListener
 import io.github.gubarsergey.cam4learn.utility.extension.input
 import io.github.gubarsergey.cam4learn.utility.extension.navigate
 import io.github.gubarsergey.cam4learn.utility.extension.safelyDispose
@@ -44,6 +45,12 @@ class LoginActivity : AppCompatActivity() {
     private fun setupListeners() {
         login_login_button.setOnClickListener {
             handleLogin(login_email_edit_text.input, login_password_edit_text.input)
+        }
+        login_email_edit_text.addSimpleTextChangedListener {
+            login_email_text_input_layout.error = null
+        }
+        login_password_edit_text.addSimpleTextChangedListener {
+            login_password_text_input_layout.error = null
         }
     }
 
