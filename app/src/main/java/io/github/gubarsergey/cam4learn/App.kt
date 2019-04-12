@@ -9,6 +9,8 @@ import io.github.gubarsergey.cam4learn.network.constant.NetworkConstants
 import io.github.gubarsergey.cam4learn.network.repository.lector.LectorsRepository
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
 import io.github.gubarsergey.cam4learn.network.repository.subject.SubjectsRepository
+import io.github.gubarsergey.cam4learn.utility.helper.FileHelper
+import io.github.gubarsergey.cam4learn.utility.helper.RuntimePermissionHelper
 import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,36 +47,24 @@ class App : Application() {
     }
 
     private val loginModule = module {
-        single {
-            get<Retrofit>().create(LoginApi::class.java)
-        }
-        single {
-            LoginRepository(get())
-        }
+        single { get<Retrofit>().create(LoginApi::class.java) }
+        single { LoginRepository(get()) }
     }
 
     private val utilsModule = module {
-        single {
-            SharedPrefHelper(get())
-        }
+        single { SharedPrefHelper(get()) }
+        single { FileHelper(get()) }
+        single { RuntimePermissionHelper() }
     }
 
     private val subjectsModule = module {
-        single {
-            SubjectsRepository(get(), get())
-        }
-        single {
-            get<Retrofit>().create(SubjectsApi::class.java)
-        }
+        single { SubjectsRepository(get(), get()) }
+        single { get<Retrofit>().create(SubjectsApi::class.java) }
     }
 
     private val lectorsModule = module {
-        single {
-            get<Retrofit>().create(LectorsApi::class.java)
-        }
-        single {
-            LectorsRepository(get(), get())
-        }
+        single { get<Retrofit>().create(LectorsApi::class.java) }
+        single { LectorsRepository(get(), get()) }
     }
 
     override fun onCreate() {

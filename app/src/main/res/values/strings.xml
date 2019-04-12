@@ -14,5 +14,8 @@
     <string name="ok">Ok</string>
     <string name="info_lectors_export">This action will export data about lectors. Continue?</string>
     <string name="info_subjects_export">This action will export data about subjects. Continue?</string>
+    <string name="two_placeholder_string">%1$s %2$s</string>
+    <string name="error_export_permission">App needs permission to export.</string>
+
 
 </resources>

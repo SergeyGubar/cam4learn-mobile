@@ -9,12 +9,13 @@ object DialogUtil {
         context: Context,
         title: String,
         message: String,
+        positiveCallback: () -> Unit,
         positiveButtonText: String = context.getString(R.string.ok)
     ) {
         val builder = AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(positiveButtonText, null)
+            .setPositiveButton(positiveButtonText) { _, _ -> positiveCallback() }
         builder.show()
     }
 }

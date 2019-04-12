@@ -7,6 +7,7 @@ import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 
 class SubjectsRepository(
     private val api: SubjectsApi,
@@ -18,5 +19,10 @@ class SubjectsRepository(
                 Result.Success(response.body())
             } else Result.Error<List<SubjectResponseModel>?>(response.code().toString())
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+    }
+
+    fun getAllSubjectsJson(): Single<ResponseBody> {
+        return api.getAllSubjectsJson(prefHelper.getToken())
+            .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 }

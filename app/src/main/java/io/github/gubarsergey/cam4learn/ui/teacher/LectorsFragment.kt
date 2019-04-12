@@ -55,7 +55,13 @@ class LectorsFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.main_menu_teachers -> {
-                DialogUtil.showPositiveDialog(notNullContext, getString(R.string.export), getString(R.string.info_lectors_export))
+                DialogUtil.showPositiveDialog(
+                    notNullContext,
+                    getString(R.string.export),
+                    getString(R.string.info_lectors_export),
+                    positiveCallback = {
+                        // TODO
+                    })
                 true
             }
             else -> false

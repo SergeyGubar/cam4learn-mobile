@@ -10,7 +10,6 @@ import io.github.gubarsergey.cam4learn.utility.extension.inflater
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_subject.*
 
-
 class SubjectsAdapter(subjects: MutableList<SubjectResponseModel> = mutableListOf()) :
     BaseAdapter<SubjectResponseModel>(subjects) {
 
@@ -19,8 +18,9 @@ class SubjectsAdapter(subjects: MutableList<SubjectResponseModel> = mutableListO
 
     inner class SubjectViewHolder(view: View) : BaseViewHolder<SubjectResponseModel>(view), LayoutContainer {
         override fun bind(item: SubjectResponseModel) {
-            subject_item_id.text = item.id.toString()
             subject_item_title.text = item.title
+            subject_teacher_info.text =
+                containerView.context.getString(R.string.two_placeholder_string, item.name, item.surname)
         }
     }
 }

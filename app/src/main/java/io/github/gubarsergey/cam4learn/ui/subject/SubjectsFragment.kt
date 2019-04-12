@@ -13,16 +13,26 @@ import io.github.gubarsergey.cam4learn.ui.BaseFragment
 import io.github.gubarsergey.cam4learn.utility.dialog.DialogUtil
 import io.github.gubarsergey.cam4learn.utility.extension.notNullContext
 import io.github.gubarsergey.cam4learn.utility.extension.safelyDispose
+import io.github.gubarsergey.cam4learn.utility.helper.FileHelper
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_subjects.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import android.content.pm.PackageManager
+import io.github.gubarsergey.cam4learn.utility.helper.RuntimePermissionHelper
+
+
+private const val REQUEST_CODE_WRITE_STORAGE = 42
 
 class SubjectsFragment : BaseFragment() {
 
     private val subjectsRepository: SubjectsRepository by inject()
+    private val runtimePermissionHelper: RuntimePermissionHelper by inject()
+    private val fileHelper: FileHelper by inject()
     private val adapter: SubjectsAdapter = SubjectsAdapter()
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     companion object {
         fun newInstance(): SubjectsFragment {
@@ -47,21 +57,54 @@ class SubjectsFragment : BaseFragment() {
 
     override fun onStop() {
         super.onStop()
-        disposable.safelyDispose()
+        compositeDisposable.safelyDispose()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.main_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.main_menu_teachers -> {
-                DialogUtil.showPositiveDialog(notNullContext, getString(R.string.export), getString(R.string.info_subjects_export))
+                DialogUtil.showPositiveDialog(
+                    notNullContext,
+                    getString(R.string.export),
+                    getString(R.string.info_subjects_export),
+                    positiveCallback = {
+                        if (runtimePermissionHelper.checkStorageWritePermissionGranted(activity!!)) {
+                            exportJson()
+                        } else {
+                            runtimePermissionHelper.requestStorageWritePermission(activity!!, REQUEST_CODE_WRITE_STORAGE)
+                        }
+                    })
                 true
             }
             else -> false
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_WRITE_STORAGE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                exportJson()
+            } else {
+                toast(getString(R.string.error_export_permission))
+            }
+        }
+    }
+
+    private fun exportJson() {
+        compositeDisposable.add(subjectsRepository.getAllSubjectsJson().subscribeBy(
+            onError = { error ->
+                Timber.w("$error")
+            },
+            onSuccess = { result ->
+                Timber.d("Saving result $result")
+                fileHelper.saveContentToFile("test.json", result.string())
+            }
+        ))
     }
 
     private fun initRecycler() {
@@ -70,7 +113,7 @@ class SubjectsFragment : BaseFragment() {
     }
 
     private fun loadSubjects() {
-        disposable = subjectsRepository.getAllSubjects().subscribeBy(
+        compositeDisposable.add(subjectsRepository.getAllSubjects().subscribeBy(
             onSuccess = { result ->
                 when (result) {
                     is Result.Success -> {
@@ -87,6 +130,6 @@ class SubjectsFragment : BaseFragment() {
             onError = {
                 Timber.w(("error [${it.localizedMessage}]"))
             }
-        )
+        ))
     }
 }
