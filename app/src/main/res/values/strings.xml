@@ -11,11 +11,16 @@
     <string name="error_email_validation">You need to enter valid email!</string>
     <string name="error_password_validation">You need to enter valid password!</string>
     <string name="export">Export</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="info_lectors_export">This action will export data about lectors. Continue?</string>
     <string name="info_subjects_export">This action will export data about subjects. Continue?</string>
     <string name="two_placeholder_string">%1$s %2$s</string>
     <string name="error_export_permission">App needs permission to export.</string>
+    <string name="json">JSON</string>
+    <string name="csv">CSV</string>
+    <string name="error_export_csv">Export to CSV failed!</string>
+    <string name="error_export_json">Export to JSON failed!</string>
+    <string name="export_json_success">JSON successfully exported!</string>
 
 
 </resources>

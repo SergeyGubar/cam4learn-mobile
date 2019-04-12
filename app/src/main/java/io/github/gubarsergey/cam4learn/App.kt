@@ -4,10 +4,12 @@ import android.app.Application
 import com.google.gson.GsonBuilder
 import io.github.gubarsergey.cam4learn.network.api.LectorsApi
 import io.github.gubarsergey.cam4learn.network.api.LoginApi
+import io.github.gubarsergey.cam4learn.network.api.SubjectStatisticApi
 import io.github.gubarsergey.cam4learn.network.api.SubjectsApi
 import io.github.gubarsergey.cam4learn.network.constant.NetworkConstants
 import io.github.gubarsergey.cam4learn.network.repository.lector.LectorsRepository
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
+import io.github.gubarsergey.cam4learn.network.repository.statistic.SubjectStatisticRepository
 import io.github.gubarsergey.cam4learn.network.repository.subject.SubjectsRepository
 import io.github.gubarsergey.cam4learn.utility.helper.FileHelper
 import io.github.gubarsergey.cam4learn.utility.helper.RuntimePermissionHelper
@@ -67,6 +69,11 @@ class App : Application() {
         single { LectorsRepository(get(), get()) }
     }
 
+    private val subjectStatisticModule = module {
+        single { get<Retrofit>().create(SubjectStatisticApi::class.java) }
+        single { SubjectStatisticRepository(get(), get()) }
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
@@ -78,7 +85,8 @@ class App : Application() {
                 loginModule,
                 utilsModule,
                 subjectsModule,
-                lectorsModule
+                lectorsModule,
+                subjectStatisticModule
             )
             androidContext(this@App)
         }

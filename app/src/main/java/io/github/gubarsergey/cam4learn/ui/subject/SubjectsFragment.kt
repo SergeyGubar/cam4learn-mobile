@@ -22,16 +22,20 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import android.content.pm.PackageManager
 import io.github.gubarsergey.cam4learn.utility.helper.RuntimePermissionHelper
+import java.lang.IllegalStateException
 
 
-private const val REQUEST_CODE_WRITE_STORAGE = 42
+private const val REQUEST_CODE_WRITE_JSON = 42
+private const val REQUEST_CODE_WRITE_CSV = 43
+private const val EXPORT_JSON_POSITION = 0
+private const val EXPORT_CSV_POSITION = 1
 
 class SubjectsFragment : BaseFragment() {
 
     private val subjectsRepository: SubjectsRepository by inject()
     private val runtimePermissionHelper: RuntimePermissionHelper by inject()
     private val fileHelper: FileHelper by inject()
-    private val adapter: SubjectsAdapter = SubjectsAdapter()
+    private val adapter: SubjectsAdapter = SubjectsAdapter(::onSubjectClicked)
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     companion object {
@@ -42,7 +46,6 @@ class SubjectsFragment : BaseFragment() {
 
     override fun getTitle(): String? = getString(R.string.subjects)
     override val layout: Int = R.layout.fragment_subjects
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,44 +70,71 @@ class SubjectsFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.main_menu_teachers -> {
-                DialogUtil.showPositiveDialog(
-                    notNullContext,
-                    getString(R.string.export),
-                    getString(R.string.info_subjects_export),
-                    positiveCallback = {
-                        if (runtimePermissionHelper.checkStorageWritePermissionGranted(activity!!)) {
-                            exportJson()
-                        } else {
-                            runtimePermissionHelper.requestStorageWritePermission(activity!!, REQUEST_CODE_WRITE_STORAGE)
-                        }
-                    })
+                showExportDialog()
                 true
             }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_WRITE_STORAGE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                exportJson()
-            } else {
-                toast(getString(R.string.error_export_permission))
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            when (requestCode) {
+                REQUEST_CODE_WRITE_CSV -> exportCsv()
+                REQUEST_CODE_WRITE_JSON -> exportJson()
             }
+        } else {
+            toast(getString(R.string.error_export_permission))
+        }
+    }
+
+    private fun onSubjectClicked(id: String) {
+        Timber.d("onSubjectClicked: id = [$id]")
+    }
+
+    private fun showExportDialog() {
+        with(notNullContext) {
+            DialogUtil.showSingleChoiceDialog(
+                this,
+                getString(R.string.export),
+                arrayOf(getString(R.string.json), getString(R.string.csv)),
+                { position ->
+                    if (runtimePermissionHelper.checkStorageWritePermissionGranted(activity!!)) {
+                        when (position) {
+                            EXPORT_JSON_POSITION -> exportJson()
+                            EXPORT_CSV_POSITION -> exportCsv()
+                        }
+                    } else {
+                        val code = when (position) {
+                            EXPORT_JSON_POSITION -> REQUEST_CODE_WRITE_JSON
+                            EXPORT_CSV_POSITION -> REQUEST_CODE_WRITE_CSV
+                            else -> throw IllegalStateException("Position $position unsupported")
+                        }
+                        runtimePermissionHelper.requestStorageWritePermission(activity!!, code)
+                    }
+                }
+            )
         }
     }
 
     private fun exportJson() {
         compositeDisposable.add(subjectsRepository.getAllSubjectsJson().subscribeBy(
             onError = { error ->
+                toast(getString(R.string.error_export_json))
                 Timber.w("$error")
             },
             onSuccess = { result ->
+                toast(getString(R.string.export_json_success))
                 Timber.d("Saving result $result")
-                fileHelper.saveContentToFile("test.json", result.string())
+                fileHelper.saveContentToFile("teacher-subjects.json", result.string())
             }
         ))
+    }
+
+    private fun exportCsv() {
+        toast(getString(R.string.error_export_csv))
+        // TODO
     }
 
     private fun initRecycler() {
