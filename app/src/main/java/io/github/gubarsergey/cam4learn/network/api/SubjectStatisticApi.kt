@@ -8,7 +8,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface SubjectStatisticApi {
-    @GET("/api/subjectStatistic")
+    @GET("/api/subjectStatisticJson")
     fun getSubjectStatistic(@Header("JWT") token: String?,
-                       @Query("subjectId") id: Int): Single<Response<SubjectStatisticResponseModel>>
+                       @Query("subjectId") id: Int): Single<Response<List<SubjectStatisticResponseModel>?>>
 }

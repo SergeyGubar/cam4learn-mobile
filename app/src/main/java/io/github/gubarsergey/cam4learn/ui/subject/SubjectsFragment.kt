@@ -21,6 +21,7 @@ import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import android.content.pm.PackageManager
+import io.github.gubarsergey.cam4learn.ui.subject.statistic.SubjectStatisticActivity
 import io.github.gubarsergey.cam4learn.utility.helper.RuntimePermissionHelper
 import java.lang.IllegalStateException
 
@@ -91,6 +92,7 @@ class SubjectsFragment : BaseFragment() {
 
     private fun onSubjectClicked(id: String) {
         Timber.d("onSubjectClicked: id = [$id]")
+        startActivity(SubjectStatisticActivity.makeIntent(notNullContext, id.toInt()))
     }
 
     private fun showExportDialog() {
