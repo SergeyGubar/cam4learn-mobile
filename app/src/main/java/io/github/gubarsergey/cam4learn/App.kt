@@ -28,22 +28,19 @@ import timber.log.Timber
 class App : Application() {
 
     private val networkModule = module {
+
         single {
-            val interceptor = HttpLoggingInterceptor()
-            interceptor.level = HttpLoggingInterceptor.Level.BASIC
-            OkHttpClient.Builder().addInterceptor(interceptor).build()
-        }
-        single {
-            GsonBuilder()
+            val gson = GsonBuilder()
                 .setLenient()
                 .create()
-        }
-        single {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.level = HttpLoggingInterceptor.Level.BASIC
+            val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
             Retrofit.Builder()
                 .baseUrl(NetworkConstants.BASE_URl)
-                .client(get())
+                .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(get()))
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
         }
     }

@@ -7,6 +7,7 @@ import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 import timber.log.Timber
 
 class SubjectStatisticRepository(
@@ -21,4 +22,18 @@ class SubjectStatisticRepository(
             } else Result.Error<List<SubjectStatisticResponseModel>?>(response.code().toString())
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
+
+
+    fun getStatisticJson(id: Int): Single<ResponseBody> {
+        Timber.d("getStatisticJson: id = [$id]")
+        return api.getSubjectStatisticJson(prefHelper.getToken(), id).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun getStatisticCsv(id: Int): Single<ResponseBody> {
+        Timber.d("getStatisticCsv: id = [$id]")
+        return api.getSubjectStatisticCsv(prefHelper.getToken(), id).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+    }
+
 }

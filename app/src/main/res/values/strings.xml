@@ -21,6 +21,7 @@
     <string name="error_export_csv">Export to CSV failed!</string>
     <string name="error_export_json">Export to JSON failed!</string>
     <string name="export_json_success">JSON successfully exported!</string>
+    <string name="export_csv_success">CSV successfully exported!</string>
     <string name="error_load_subject_statistic">Error loading subject statistic!</string>
 
 

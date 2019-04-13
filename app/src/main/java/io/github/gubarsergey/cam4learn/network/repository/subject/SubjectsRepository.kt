@@ -25,4 +25,10 @@ class SubjectsRepository(
         return api.getAllSubjectsJson(prefHelper.getToken())
             .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
+
+    fun getAllSubjectsCsv(): Single<ResponseBody> {
+        return api.getAllSubjectsCsv(prefHelper.getToken())
+            .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+    }
+
 }

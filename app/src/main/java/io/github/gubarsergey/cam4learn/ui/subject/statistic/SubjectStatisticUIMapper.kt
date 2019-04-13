@@ -7,7 +7,7 @@ class SubjectStatisticUIMapper {
         return item.attendanceList.map { attendanceResponseModel ->
             with(attendanceResponseModel) {
                 SubjectStatisticUIModel(
-                    "AAPZ",
+                    item.subject,
                     surname,
                     item.date,
                     group,

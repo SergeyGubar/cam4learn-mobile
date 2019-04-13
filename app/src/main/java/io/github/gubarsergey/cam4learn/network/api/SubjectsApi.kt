@@ -14,4 +14,7 @@ interface SubjectsApi {
     @GET("api/getSubjects")
     fun getAllSubjectsJson(@Header("JWT") token: String?): Single<ResponseBody>
 
+    @GET("/api/getSubjectsCsv")
+    fun getAllSubjectsCsv(@Header("JWT") token: String?): Single<ResponseBody>
+
 }

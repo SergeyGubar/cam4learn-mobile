@@ -1,5 +1,6 @@
 package io.github.gubarsergey.cam4learn.ui.subject
 
+import android.Manifest
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -24,6 +25,7 @@ import android.content.pm.PackageManager
 import io.github.gubarsergey.cam4learn.ui.subject.statistic.SubjectStatisticActivity
 import io.github.gubarsergey.cam4learn.utility.helper.RuntimePermissionHelper
 import java.lang.IllegalStateException
+import java.util.*
 
 
 private const val REQUEST_CODE_WRITE_JSON = 42
@@ -113,7 +115,7 @@ class SubjectsFragment : BaseFragment() {
                             EXPORT_CSV_POSITION -> REQUEST_CODE_WRITE_CSV
                             else -> throw IllegalStateException("Position $position unsupported")
                         }
-                        runtimePermissionHelper.requestStorageWritePermission(activity!!, code)
+                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), code)
                     }
                 }
             )
@@ -129,14 +131,23 @@ class SubjectsFragment : BaseFragment() {
             onSuccess = { result ->
                 toast(getString(R.string.export_json_success))
                 Timber.d("Saving result $result")
-                fileHelper.saveContentToFile("teacher-subjects.json", result.string())
+                fileHelper.saveContentToFile("teacher-subjects${Calendar.getInstance().time}.json", result.string())
             }
         ))
     }
 
     private fun exportCsv() {
-        toast(getString(R.string.error_export_csv))
-        // TODO
+        compositeDisposable.add(subjectsRepository.getAllSubjectsCsv().subscribeBy(
+            onError = { error ->
+                toast(getString(R.string.error_export_csv))
+                Timber.w("$error")
+            },
+            onSuccess = { result ->
+                toast(getString(R.string.export_csv_success))
+                Timber.d("Saving result $result")
+                fileHelper.saveContentToFile("teacher-subjects${Calendar.getInstance().time}.csv", result.string())
+            }
+        ))
     }
 
     private fun initRecycler() {
