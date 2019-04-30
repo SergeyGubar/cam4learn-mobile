@@ -2,11 +2,9 @@ package io.github.gubarsergey.cam4learn
 
 import android.app.Application
 import com.google.gson.GsonBuilder
-import io.github.gubarsergey.cam4learn.network.api.LectorsApi
-import io.github.gubarsergey.cam4learn.network.api.LoginApi
-import io.github.gubarsergey.cam4learn.network.api.SubjectStatisticApi
-import io.github.gubarsergey.cam4learn.network.api.SubjectsApi
+import io.github.gubarsergey.cam4learn.network.api.*
 import io.github.gubarsergey.cam4learn.network.constant.NetworkConstants
+import io.github.gubarsergey.cam4learn.network.repository.classes.ClassesRepository
 import io.github.gubarsergey.cam4learn.network.repository.lector.LectorsRepository
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
 import io.github.gubarsergey.cam4learn.network.repository.statistic.SubjectStatisticRepository
@@ -71,6 +69,11 @@ class App : Application() {
         single { SubjectStatisticRepository(get(), get()) }
     }
 
+    private val classesModule = module {
+        single { get<Retrofit>().create(ClassesApi::class.java) }
+        single { ClassesRepository(get(), get()) }
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
@@ -83,7 +86,8 @@ class App : Application() {
                 utilsModule,
                 subjectsModule,
                 lectorsModule,
-                subjectStatisticModule
+                subjectStatisticModule,
+                classesModule
             )
             androidContext(this@App)
         }

@@ -10,5 +10,8 @@
         <item
             android:id="@+id/nav_groups"
             android:title="@string/groups" />
+        <item
+            android:id="@+id/nav_classes"
+            android:title="@string/classes" />
     </group>
 </menu>

@@ -23,6 +23,11 @@
     <string name="export_json_success">JSON successfully exported!</string>
     <string name="export_csv_success">CSV successfully exported!</string>
     <string name="error_load_subject_statistic">Error loading subject statistic!</string>
+    <string name="classes">Classes</string>
+    <string name="cancel">Cancel</string>
+    <string name="students">Students</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 
 </resources>

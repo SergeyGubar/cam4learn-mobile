@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="4dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/class_lecture_hall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="310" />
+
+        <TextView
+            android:id="@+id/class_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintStart_toStartOf="@+id/class_lecture_hall"
+            app:layout_constraintTop_toBottomOf="@+id/class_lecture_hall"
+            tools:text="AVPZ" />
+
+        <TextView
+            android:id="@+id/class_groups"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="@+id/class_subject"
+            app:layout_constraintTop_toBottomOf="@+id/class_subject"
+            tools:text="PZPI-16-3, PZPI-16-5" />
+
+        <TextView
+            android:id="@+id/class_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+
+            app:layout_constraintBottom_toBottomOf="@+id/class_lecture_hall"
+            app:layout_constraintStart_toEndOf="@+id/class_lecture_hall"
+            app:layout_constraintTop_toTopOf="@+id/class_lecture_hall"
+            tools:text="Class Super" />
+
+        <TextView
+            android:id="@+id/class_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+
+            app:layout_constraintBottom_toBottomOf="@+id/class_subject"
+            app:layout_constraintStart_toEndOf="@+id/class_subject"
+            app:layout_constraintTop_toTopOf="@+id/class_subject"
+            tools:text="18/09/98" />
+
+        <TextView
+            android:id="@+id/class_pair_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintBottom_toBottomOf="@+id/class_date"
+            app:layout_constraintStart_toEndOf="@+id/class_date"
+            app:layout_constraintTop_toTopOf="@+id/class_date"
+            tools:text="3" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

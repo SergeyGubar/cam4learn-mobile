@@ -32,6 +32,9 @@
         <activity
             android:name=".ui.subject.statistic.SubjectStatisticActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.classes.edit.EditClassActivity" />
+        <activity android:name=".ui.classes.add.AddClassActivity" />
+        <activity android:name=".ui.classes.student.ClassStudentsActivity" />
     </application>
 
 </manifest>

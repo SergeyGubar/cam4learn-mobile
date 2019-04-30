@@ -8,6 +8,7 @@ import io.github.gubarsergey.cam4learn.R
 import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel
 import io.github.gubarsergey.cam4learn.network.repository.login.LoginRepository
+import io.github.gubarsergey.cam4learn.ui.classes.ClassesFragment
 import io.github.gubarsergey.cam4learn.ui.group.GroupsFragment
 import io.github.gubarsergey.cam4learn.ui.subject.SubjectsFragment
 import io.github.gubarsergey.cam4learn.ui.teacher.LectorsFragment
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_groups -> GroupsFragment.newInstance()
             R.id.nav_subjects -> SubjectsFragment.newInstance()
             R.id.nav_teachers -> LectorsFragment.newInstance()
+            R.id.nav_classes -> ClassesFragment.newInstance()
             else -> throw IllegalStateException("Menu item $menuItem does not exist!")
         }
         supportFragmentManager.inTransaction {
