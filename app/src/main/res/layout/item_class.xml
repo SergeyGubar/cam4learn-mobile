@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/class_lecture_hall"
+            android:id="@+id/class_room_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toStartOf="@+id/class_lecture_hall"
-            app:layout_constraintTop_toBottomOf="@+id/class_lecture_hall"
+            app:layout_constraintStart_toStartOf="@+id/class_room_number"
+            app:layout_constraintTop_toBottomOf="@+id/class_room_number"
             tools:text="AVPZ" />
 
         <TextView
@@ -54,10 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-
-            app:layout_constraintBottom_toBottomOf="@+id/class_lecture_hall"
-            app:layout_constraintStart_toEndOf="@+id/class_lecture_hall"
-            app:layout_constraintTop_toTopOf="@+id/class_lecture_hall"
+            app:layout_constraintBottom_toBottomOf="@+id/class_room_number"
+            app:layout_constraintStart_toEndOf="@+id/class_room_number"
+            app:layout_constraintTop_toTopOf="@+id/class_room_number"
             tools:text="Class Super" />
 
         <TextView

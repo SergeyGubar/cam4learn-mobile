@@ -69,7 +69,7 @@ class ClassesFragment : BaseFragment() {
             arrayOf(getString(R.string.students), getString(R.string.edit), getString(R.string.delete)),
             listOf(
                 {
-                    startActivityForResult(ClassStudentsActivity.makeIntent(notNullContext), NEW_DATA_REQUEST_CODE)
+//                    startActivityForResult(ClassStudentsActivity.(notNullContext), NEW_DATA_REQUEST_CODE)
                 },
                 {
                     startActivityForResult(EditClassActivity.makeIntent(notNullContext, classResponseModel.id), NEW_DATA_REQUEST_CODE)

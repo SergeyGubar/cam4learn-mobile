@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface ClassesApi {
-    // TODO
-    @GET("api/lectors")
+    @GET("api/lecture")
     fun getClasses(@Header("JWT") token: String): Single<Response<List<ClassResponseModel>>>
 }

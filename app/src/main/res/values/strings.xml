@@ -28,6 +28,12 @@
     <string name="students">Students</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="class_name">Class Name</string>
+    <string name="class_number">Class Number</string>
+    <string name="date">Date</string>
+    <string name="add_class">Add Class</string>
+    <string name="save">Save</string>
+    <string name="rooms">Rooms</string>
 
 
 </resources>
