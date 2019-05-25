@@ -8,6 +8,11 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface SubjectsApi {
+
+
+    @GET("api/getLectorSubjects")
+    fun getLectorsSubjects(@Header("JWT") token: String): Single<Response<List<SubjectResponseModel>>>
+
     @GET("api/getSubjects")
     fun getAllSubjects(@Header("JWT") token: String?): Single<Response<List<SubjectResponseModel>>>
 

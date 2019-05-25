@@ -24,7 +24,7 @@ class SubjectsAdapter(
             subject_item_title.text = item.title
             subject_teacher_info.text =
                 containerView.context.getString(R.string.two_placeholder_string, item.name, item.surname)
-            containerView.setOnClickListener { onSubjectClicked(item.id) }
+            containerView.setOnClickListener { onSubjectClicked(item.id.toString()) }
         }
     }
 }

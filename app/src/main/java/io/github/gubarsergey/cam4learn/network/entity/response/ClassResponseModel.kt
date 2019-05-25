@@ -1,7 +1,7 @@
 package io.github.gubarsergey.cam4learn.network.entity.response
 
 data class ClassResponseModel(
-    val id: String,
+    val id: Int,
     val classNum: Int,
     val date: String,
     val groups: List<String>,

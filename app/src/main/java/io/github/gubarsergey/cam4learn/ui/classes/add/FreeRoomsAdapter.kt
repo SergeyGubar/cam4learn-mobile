@@ -13,7 +13,7 @@ class FreeRoomsAdapter(items: MutableList<FreeRoomResponseModel> = mutableListOf
     BaseAdapter<FreeRoomResponseModel>(items) {
 
     private val checkedStates = mutableListOf<Boolean>()
-    private var previouslyCheckedPosition = -1
+    var checkedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): BaseViewHolder<FreeRoomResponseModel> {
         return FreeRoomViewHolder(parent.context.inflater.inflate(R.layout.item_free_room, parent, false))
@@ -25,18 +25,20 @@ class FreeRoomsAdapter(items: MutableList<FreeRoomResponseModel> = mutableListOf
         notifyDataSetChanged()
     }
 
+    fun getSelectedItem() = items[checkedPosition]
+
     inner class FreeRoomViewHolder(view: View) : BaseViewHolder<FreeRoomResponseModel>(view) {
         override fun bind(item: FreeRoomResponseModel) {
             val position = adapterPosition
             item_room_number_text_view.text = item.room
             item_room_radiobutton.setOnCheckedChangeListener(null)
             item_room_radiobutton.isChecked = checkedStates[position]
-            item_room_radiobutton.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (previouslyCheckedPosition != -1) {
-                    checkedStates[previouslyCheckedPosition] = false
-                    notifyItemChanged(previouslyCheckedPosition)
+            item_room_radiobutton.setOnCheckedChangeListener { _, _ ->
+                if (checkedPosition != -1) {
+                    checkedStates[checkedPosition] = false
+                    notifyItemChanged(checkedPosition)
                 }
-                previouslyCheckedPosition = position
+                checkedPosition = position
                 checkedStates[position] = true
                 notifyItemChanged(position)
             }

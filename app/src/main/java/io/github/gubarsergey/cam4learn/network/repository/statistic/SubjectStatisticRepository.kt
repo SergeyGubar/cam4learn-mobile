@@ -23,7 +23,6 @@ class SubjectStatisticRepository(
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 
-
     fun getStatisticJson(id: Int): Single<ResponseBody> {
         Timber.d("getStatisticJson: id = [$id]")
         return api.getSubjectStatisticJson(prefHelper.getToken(), id).observeOn(AndroidSchedulers.mainThread())

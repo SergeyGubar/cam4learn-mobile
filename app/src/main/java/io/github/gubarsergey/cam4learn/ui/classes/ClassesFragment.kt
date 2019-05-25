@@ -1,5 +1,6 @@
 package io.github.gubarsergey.cam4learn.ui.classes
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -12,8 +13,10 @@ import io.github.gubarsergey.cam4learn.ui.classes.edit.EditClassActivity
 import io.github.gubarsergey.cam4learn.ui.classes.student.ClassStudentsActivity
 import io.github.gubarsergey.cam4learn.utility.dialog.DialogUtil
 import io.github.gubarsergey.cam4learn.utility.extension.notNullContext
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_classes.*
+import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -63,21 +66,24 @@ class ClassesFragment : BaseFragment() {
     }
 
     private fun onLongItemClassClick(classResponseModel: ClassResponseModel) {
-        DialogUtil.showDialogWithThreeOptions(
+        DialogUtil.showPositiveDialog(
             notNullContext,
-            classResponseModel.id,
-            arrayOf(getString(R.string.students), getString(R.string.edit), getString(R.string.delete)),
-            listOf(
-                {
-//                    startActivityForResult(ClassStudentsActivity.(notNullContext), NEW_DATA_REQUEST_CODE)
-                },
-                {
-                    startActivityForResult(EditClassActivity.makeIntent(notNullContext, classResponseModel.id), NEW_DATA_REQUEST_CODE)
-                },
-                {
-                    // TODO
-                }
-            )
+            getString(R.string.delete_class_confirm),
+            getString(R.string.this_action_cannot_be_undone),
+            {
+                disposable = repository.deleteClass(classResponseModel.id)
+                    .subscribeBy(
+                        onError = { toast(it.localizedMessage) },
+                        onSuccess = { adapter.removeItem(classResponseModel.id) }
+                    )
+            }
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == NEW_DATA_REQUEST_CODE) {
+            loadData()
+        }
     }
 }

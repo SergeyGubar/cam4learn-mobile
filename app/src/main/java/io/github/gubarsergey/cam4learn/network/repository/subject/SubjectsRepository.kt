@@ -21,10 +21,19 @@ class SubjectsRepository(
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 
+    fun getLectorsSubjects(): Single<Result<List<SubjectResponseModel>?>> {
+        return api.getLectorsSubjects(prefHelper.getToken()).map { response ->
+            if (response.isSuccessful) {
+                Result.Success(response.body())
+            } else Result.Error<List<SubjectResponseModel>?>(response.code().toString())
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+    }
+
     fun getAllSubjectsJson(): Single<ResponseBody> {
         return api.getAllSubjectsJson(prefHelper.getToken())
             .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
+
 
     fun getAllSubjectsCsv(): Single<ResponseBody> {
         return api.getAllSubjectsCsv(prefHelper.getToken())

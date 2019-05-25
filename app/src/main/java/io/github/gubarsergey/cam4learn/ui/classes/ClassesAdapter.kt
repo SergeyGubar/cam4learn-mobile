@@ -19,8 +19,13 @@ class ClassesAdapter(
         return ClassViewHolder(parent.context.inflater.inflate(R.layout.item_class, parent, false))
     }
 
-    inner class ClassViewHolder(view: View) : BaseViewHolder<ClassResponseModel>(view) {
+    fun removeItem(id: Int) {
+        val index = items.indexOfFirst { it.id == id }
+        items.removeAt(index)
+        notifyItemRemoved(index)
+    }
 
+    inner class ClassViewHolder(view: View) : BaseViewHolder<ClassResponseModel>(view) {
         override fun bind(item: ClassResponseModel) {
             containerView.setOnLongClickListener {
                 onLongClick(item)
