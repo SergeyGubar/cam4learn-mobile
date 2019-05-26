@@ -1,7 +1,10 @@
 package io.github.gubarsergey.cam4learn.ui.login
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import io.github.gubarsergey.cam4learn.R
 import io.github.gubarsergey.cam4learn.Result
 import io.github.gubarsergey.cam4learn.network.entity.request.LoginRequestModel

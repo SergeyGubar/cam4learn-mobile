@@ -9,11 +9,9 @@ import io.github.gubarsergey.cam4learn.network.entity.response.ClassResponseMode
 import io.github.gubarsergey.cam4learn.network.repository.classes.ClassesRepository
 import io.github.gubarsergey.cam4learn.ui.BaseFragment
 import io.github.gubarsergey.cam4learn.ui.classes.add.AddClassActivity
-import io.github.gubarsergey.cam4learn.ui.classes.edit.EditClassActivity
-import io.github.gubarsergey.cam4learn.ui.classes.student.ClassStudentsActivity
+import io.github.gubarsergey.cam4learn.ui.classes.attendance.ClassAttendanceActivity
 import io.github.gubarsergey.cam4learn.utility.dialog.DialogUtil
 import io.github.gubarsergey.cam4learn.utility.extension.notNullContext
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_classes.*
 import org.jetbrains.anko.support.v4.toast
@@ -29,7 +27,10 @@ class ClassesFragment : BaseFragment() {
 
     override val layout: Int = R.layout.fragment_classes
     override fun getTitle(): String? = getString(R.string.classes)
-    private val adapter = ClassesAdapter(onLongClick = ::onLongItemClassClick)
+    private val adapter = ClassesAdapter(
+        onLongClick = ::onLongItemClassClick,
+        onClick = ::onClassClick
+    )
     private val repository: ClassesRepository by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,6 +79,10 @@ class ClassesFragment : BaseFragment() {
                     )
             }
         )
+    }
+
+    private fun onClassClick(classResponseModel: ClassResponseModel) {
+        startActivity(ClassAttendanceActivity.makeIntent(notNullContext, classResponseModel.id))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

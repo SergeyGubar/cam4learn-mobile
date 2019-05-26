@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -34,7 +38,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.classes.edit.EditClassActivity" />
         <activity android:name=".ui.classes.add.AddClassActivity" />
-        <activity android:name=".ui.classes.student.ClassStudentsActivity" />
+        <activity android:name=".ui.classes.attendance.ClassAttendanceActivity" />
     </application>
 
 </manifest>

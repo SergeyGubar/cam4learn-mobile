@@ -36,6 +36,8 @@
     <string name="rooms">Rooms</string>
     <string name="delete_class_confirm">Delete class?</string>
     <string name="this_action_cannot_be_undone">This action cannot be undone</string>
+    <string name="mark">Mark</string>
+    <string name="is_present">Is Present?</string>
 
 
 </resources>

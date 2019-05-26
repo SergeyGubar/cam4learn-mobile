@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.item_class.*
 
 class ClassesAdapter(
     classes: MutableList<ClassResponseModel> = mutableListOf(),
-    private val onLongClick: (ClassResponseModel) -> Unit
+    private val onLongClick: (ClassResponseModel) -> Unit,
+    private val onClick: (ClassResponseModel) -> Unit
 ) : BaseAdapter<ClassResponseModel>(classes) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ClassResponseModel> {
