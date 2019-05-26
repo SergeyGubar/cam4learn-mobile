@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.gson.GsonBuilder
 import io.github.gubarsergey.cam4learn.network.api.*
 import io.github.gubarsergey.cam4learn.network.constant.NetworkConstants
+import io.github.gubarsergey.cam4learn.network.repository.attendance.AttendanceRepository
 import io.github.gubarsergey.cam4learn.network.repository.classes.ClassesRepository
 import io.github.gubarsergey.cam4learn.network.repository.group.GroupsRepository
 import io.github.gubarsergey.cam4learn.network.repository.lector.LectorsRepository
@@ -84,7 +85,11 @@ class App : Application() {
     private val roomsModule = module {
         single { get<Retrofit>().create(RoomsApi::class.java) }
         single { RoomRepository(get(), get()) }
+    }
 
+    private val attendanceModule = module {
+        single { get<Retrofit>().create(AttendanceApi::class.java) }
+        single { AttendanceRepository(get(), get()) }
     }
 
     override fun onCreate() {
@@ -102,7 +107,8 @@ class App : Application() {
                 subjectStatisticModule,
                 classesModule,
                 groupsModule,
-                roomsModule
+                roomsModule,
+                attendanceModule
             )
             androidContext(this@App)
         }

@@ -15,3 +15,5 @@ inline fun <reified T : AppCompatActivity> navigate(
 
 val Context.inflater: LayoutInflater
     get() = LayoutInflater.from(this)
+
+fun Int.toBoolean() = this == 1

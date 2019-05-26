@@ -32,6 +32,9 @@ class ClassesAdapter(
                 onLongClick(item)
                 false
             }
+            containerView.setOnClickListener {
+                onClick(item)
+            }
             with(item) {
                 class_date.text = date
                 class_room_number.text = room

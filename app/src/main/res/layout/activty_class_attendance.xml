@@ -27,6 +27,6 @@
         android:src="@drawable/ic_add_a_photo_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/class_attendance_recycler"
-        app:layout_constraintEnd_toEndtOf="parent" />
+         />
 
 </android.support.constraint.ConstraintLayout>

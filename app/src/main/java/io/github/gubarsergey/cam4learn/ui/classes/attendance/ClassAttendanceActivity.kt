@@ -49,6 +49,11 @@ class ClassAttendanceActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.dispose()
+    }
+
     private fun loadAttendanceData() {
         attendanceRepository.getAllAttendance(classId)
             .subscribeBy(
@@ -89,7 +94,18 @@ class ClassAttendanceActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSaveClicked(isPresent: Boolean, mark: Int) {
-
+    private fun onSaveClicked(id: Int, isPresent: Boolean, mark: Int) {
+        attendanceRepository.putMark(classId, id, mark)
+            .subscribeBy(
+                onError = {
+                    Timber.d("Error: ${it.localizedMessage}")
+                    toast("Error: ${it.localizedMessage}")
+                },
+                onSuccess = {
+                    Timber.d("Success: $it")
+                    toast("Success!")
+                }
+            )
+            .addTo(compositeDisposable)
     }
 }
