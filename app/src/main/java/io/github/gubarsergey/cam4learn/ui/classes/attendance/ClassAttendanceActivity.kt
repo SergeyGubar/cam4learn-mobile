@@ -34,7 +34,8 @@ class ClassAttendanceActivity : AppCompatActivity() {
     private val classId by lazy { intent.getIntExtra(CLASS_ID_EXTRA, 0) }
     private val attendanceRepository: AttendanceRepository by inject()
     private val adapter = ClassAttendanceAdapter(
-        ::onSaveClicked
+        ::onSaveClicked,
+        ::onIsPresentClicked
     )
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -89,12 +90,20 @@ class ClassAttendanceActivity : AppCompatActivity() {
             data?.let {
                 val imageBitmap = data.extras.get("data") as Bitmap
                 val base64 = BitmapHelper.encodeToBase64(imageBitmap)
-                // TODO: upload base 64
-            } ?: toast("GG")
+                attendanceRepository.recognizeAuditory(classId, base64)
+                    .subscribeBy(
+                        onSuccess = {
+                            toast("Image was uploaded!")
+                        },
+                        onError = {
+                            toast("Error loading images ${it.localizedMessage}")
+                        }
+                    ).addTo(compositeDisposable)
+            } ?: toast("No image selected!")
         }
     }
 
-    private fun onSaveClicked(id: Int, isPresent: Boolean, mark: Int) {
+    private fun onSaveClicked(id: Int, mark: Int) {
         attendanceRepository.putMark(classId, id, mark)
             .subscribeBy(
                 onError = {
@@ -104,6 +113,21 @@ class ClassAttendanceActivity : AppCompatActivity() {
                 onSuccess = {
                     Timber.d("Success: $it")
                     toast("Success!")
+                }
+            )
+            .addTo(compositeDisposable)
+    }
+
+    private fun onIsPresentClicked(id: Int) {
+        attendanceRepository.putPresent(classId, id)
+            .subscribeBy(
+                onError = {
+                    Timber.d("Error: ${it.localizedMessage}")
+                    toast("Error: ${it.localizedMessage}")
+                },
+                onSuccess = {
+                    toast("Success!")
+                    adapter.notifyItemPresentStateChanged(id, true)
                 }
             )
             .addTo(compositeDisposable)
