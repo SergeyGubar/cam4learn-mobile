@@ -19,6 +19,6 @@ interface AttendanceApi {
     @PUT("api/putPresent")
     fun putPresent(@Header("JWT") token: String, @Body markRequestModel: PutPresentRequestModel): Single<ResponseBody>
 
-    @POST("api//api/recognizeAuditory")
+    @POST("/api/recognizeAuditory")
     fun recognizeAuditory(@Header("JWT") token: String, @Body markRequestModel: RecognizeAuditoryRequestModel): Single<ResponseBody>
 }

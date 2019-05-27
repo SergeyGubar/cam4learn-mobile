@@ -50,8 +50,8 @@ class ClassAttendanceActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         compositeDisposable.dispose()
     }
 
@@ -86,6 +86,7 @@ class ClassAttendanceActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Timber.d("onActivityResult")
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             data?.let {
                 val imageBitmap = data.extras.get("data") as Bitmap

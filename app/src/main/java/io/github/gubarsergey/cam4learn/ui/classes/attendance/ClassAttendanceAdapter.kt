@@ -30,7 +30,7 @@ class ClassAttendanceAdapter(
                 Timber.d("bind: $item")
                 item_class_attendance_student_text.text = surname
                 item_class_attendance_mark_input.setText(value.toString())
-                if (isPresent) {
+                if (!isPresent) {
                     item_class_attendance_is_present_button.visibility = View.VISIBLE
                 } else {
                     item_class_attendance_is_present_button.visibility = View.INVISIBLE

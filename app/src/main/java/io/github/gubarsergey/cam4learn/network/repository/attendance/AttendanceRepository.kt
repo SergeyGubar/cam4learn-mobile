@@ -10,6 +10,7 @@ import io.github.gubarsergey.cam4learn.utility.extension.workOnBackground
 import io.github.gubarsergey.cam4learn.utility.helper.SharedPrefHelper
 import io.reactivex.Single
 import okhttp3.ResponseBody
+import timber.log.Timber
 
 class AttendanceRepository(
     private val api: AttendanceApi,
@@ -26,10 +27,11 @@ class AttendanceRepository(
 
     fun putPresent(lectureId: Int, studentId: Int): Single<ResponseBody> {
         val requestModel = PutPresentRequestModel(lectureId, studentId)
-        return api.putPresent(prefHelper.getToken(), requestModel)
+        return api.putPresent(prefHelper.getToken(), requestModel).workOnBackground()
     }
 
     fun recognizeAuditory(lectureId: Int, photo: String): Single<ResponseBody> {
+        Timber.d("recognizeAuditory: lectureId = [$lectureId], photo = [$photo]")
         val requestModel = RecognizeAuditoryRequestModel(lectureId, photo)
         return api.recognizeAuditory(prefHelper.getToken(), requestModel).workOnBackground()
     }
